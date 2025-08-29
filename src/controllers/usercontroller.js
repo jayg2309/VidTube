@@ -105,6 +105,7 @@ const registerUser = asyncHandler(async (req, res) => {
       "Something went wrong while registering a user and images were deleted"
     );
   }
+
 });
 
 export { registerUser };
