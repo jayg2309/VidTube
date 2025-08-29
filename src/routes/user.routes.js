@@ -20,4 +20,13 @@ router.route("/register").post(
   registerUser
 );
 
+// Temporary test endpoint to verify multer is working
+router.post("/multer-test", upload.single("avatar"), (req, res) => {
+  return res.status(200).json({
+    message: "Multer is working",
+    body: req.body,
+    file: req.file,
+  });
+});
+
 export default router;
