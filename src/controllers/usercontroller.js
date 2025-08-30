@@ -179,10 +179,26 @@ const loginUser = asyncHandler(async (req, res) => {
 
 //logout - means remove the refresh token
 const logoutUser = asyncHandler(async (req, res) => {
-  await User
-    .findByIdAndUpdate
-    // getting user id after middleware setup
-    ();
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: undefined, // check also "" or null
+      },
+    },
+    { new: true }
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
 });
 
 //generating new fresh set of access tokens for user
@@ -241,4 +257,4 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, refreshAccessToken };
+export { registerUser, loginUser, refreshAccessToken, logoutUser };
