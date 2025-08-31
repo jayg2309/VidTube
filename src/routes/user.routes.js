@@ -22,7 +22,7 @@ router.route("/register").post(
 );
 
 //secured routes
-//req first goes through verifyJWT then goes to logoutUser controller
+//req first goes through verifyJWT(middleware) then goes to logoutUser controller
 router.route("/logout").post(verifyJWT, logoutUser);
 
 // Temporary test endpoint to verify multer is working
